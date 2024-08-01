@@ -1,3 +1,5 @@
 /target
 /tensortest
 /grpciotool
+/pyts/resnet50
+/pyts/__pycache__
