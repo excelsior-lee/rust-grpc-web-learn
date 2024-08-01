@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package infer;
+
+message InferRequest {
+	repeated uint64 shape = 1;
+	repeated float data = 2;	
+}
+
+message InferResponse {
+	repeated uint64 shape = 1;
+	repeated float data = 2;	
+}
+
+service Infer {
+	rpc Infer (InferRequest) returns (InferResponse);
+}
+
+// ---------------------------------------------//
+message PreProcessRequest {
+	bytes image = 1;
+}
+
+message PreProcessResponse {
+	repeated uint64 shape = 1;
+	repeated float data = 2;
+}
+
+// ---------------------------------------------//
+message AfterProcessRequest {
+	repeated uint64 shape = 1;
+	repeated float data = 2;
+}
+
+message Pred {
+	string name = 1;
+	float probability = 2;
+}
+
+// [('digital_watch', 0.627524197101593)]
+message AfterProcessResponse {
+	repeated Pred preds = 1;
+}
+
+service Process { 
+	rpc PreProcess (PreProcessRequest) returns (PreProcessResponse);
+	rpc AfterProcess (AfterProcessRequest) returns (AfterProcessResponse);
+}
+

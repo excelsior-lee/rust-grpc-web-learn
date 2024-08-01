@@ -1,0 +1,38 @@
+[package]
+name = "rust-grpc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+async-trait = "0.1"
+prost = "0.9"
+tensorflow = "0.17"
+tokio = { version = "1.12", features = ["full"] }
+tokio-stream = { version = "0.1", features = ["net"] }
+tonic = "0.6"
+
+# axum = { path = "../../axum", features = ["multipart"] }
+axum = { version = "0.3.0", features = ["multipart"] }
+# axum = "0.3.4"
+# axum = { verison = "0.3.4", features = ["multipart"] }
+# axum = "0.3.0"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+tower-http = { version = "0.1", features = ["full"] }
+
+
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tonic-web = "0.2"
+http = "0.2"
+http-body = "0.4.2"
+hyper = { version = "0.14", features = ["full"] }
+reqwest = "0.11.6"
+futures = "0.3.17"
+tower = "0.4.10"
+bytes = "1.1.0"
+warp = "0.3.1"
+
+
+[build-dependencies]
+tonic-build = "0.6"

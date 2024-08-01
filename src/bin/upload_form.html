@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Hello</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="" />
+  </head>
+  <body>
+    <input
+      type="file"
+      id="fileElem"
+      multiple
+      accept="image/*"
+      style="display: none"
+    />
+    <a href="#" id="fileSelect">选择文件</a>
+    <div id="fileList">
+      <p>尚未选择文件！</p>
+    </div>
+
+    <script>
+      const fileSelect = document.getElementById("fileSelect"),
+        fileElem = document.getElementById("fileElem"),
+        fileList = document.getElementById("fileList");
+
+      fileSelect.addEventListener(
+        "click",
+        function (e) {
+          if (fileElem) {
+            fileElem.click();
+          }
+          e.preventDefault(); // prevent navigation to "#"
+        },
+        false
+      );
+
+      fileElem.addEventListener("change", handleFiles, false);
+
+      function handleFiles() {
+        if (!this.files.length) {
+          fileList.innerHTML = "<p>No files selected!</p>";
+        } else {
+          fileList.innerHTML = "";
+          const list = document.createElement("ul");
+          fileList.appendChild(list);
+          for (let i = 0; i < this.files.length; i++) {
+            const li = document.createElement("li");
+            list.appendChild(li);
+
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(this.files[i]);
+            img.height = 200;
+            img.onload = function () {
+              URL.revokeObjectURL(this.src);
+            };
+            li.appendChild(img);
+            const info = document.createElement("span");
+
+            upload(this.files[i], li, info);
+          }
+        }
+      }
+
+      function upload(file, li, info) {
+        let formData = new FormData();
+
+        formData.append("photo", file);
+        fetch("/", { method: "POST", body: formData }).then((res) => {
+          res.json().then((data) => {
+            let { image, preds } = data[0];
+            info.innerHTML = `
+              <p>
+              ${preds[0].name} - ${preds[0].probability} <br />
+              ${preds[1].name} - ${preds[1].probability} <br />
+              ${preds[2].name} - ${preds[2].probability} <br />
+              </p>
+              <hr />
+            `;
+            li.appendChild(info);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
